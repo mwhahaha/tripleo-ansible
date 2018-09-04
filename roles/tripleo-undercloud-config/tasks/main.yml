@@ -1,0 +1,26 @@
+---
+# tasks file for tripleo-undercloud-config
+- name: copy undercloud sample
+  copy:
+    src: /usr/share/python-tripleoclient/undercloud.conf.sample
+    dest: ~/undercloud.conf
+    force: no
+    remote_src: yes
+
+- block:
+    - name: configure network
+      ini_file:
+        path: ~/undercloud.conf
+        section: "{{ item.section }}"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      loop:
+          - { 'section': 'DEFAULT', 'option': 'local_interface', 'value': "{{ undercloud_interface }}" }
+          - { 'section': 'DEFAULT', 'option': 'local_ip', 'value': "{{ undercloud_ip }}" }
+          - { 'section': 'DEFAULT', 'option': 'undercloud_admin_host', 'value': "{{ undercloud_admin_host }}" }
+          - { 'section': 'DEFAULT', 'option': 'undercloud_public_host', 'value': "{{ undercloud_public_host }}" }
+          - { 'section': 'ctlplane-subnet', 'option': 'cidr', 'value': "{{ undercloud_cidr }}" }
+          - { 'section': 'ctlplane-subnet', 'option': 'gateway', 'value': "{{ undercloud_gateway }}" }
+          - { 'section': 'ctlplane-subnet', 'option': 'dhcp_start', 'value': "{{ undercloud_dhcp_start }}" }
+          - { 'section': 'ctlplane-subnet', 'option': 'dhcp_end', 'value': "{{ undercloud_dhcp_end }}" }
+          - { 'section': 'ctlplane-subnet', 'option': 'masquerade', 'value': "{{ undercloud_masquerade }}" }

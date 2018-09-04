@@ -1,0 +1,5 @@
+---
+# tasks file for tripleo-client
+- name: install python-tripleoclient
+  package: name=python-tripleoclient state=latest
+  become: true

@@ -1,0 +1,16 @@
+all:
+  hosts:
+    hypervisor:
+      ansible_host: r805
+
+  children:
+    underclouds:
+      hosts:
+        standalone:
+          ansible_host: 10.109.0.2
+          ansible_user: centos
+        aio:
+          ansible_host: 10.109.4.2
+          ansible_user: centos
+      vars:
+        ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q r805" -o UserKnownHostsFile=/dev/null'

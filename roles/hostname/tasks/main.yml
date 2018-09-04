@@ -1,0 +1,9 @@
+---
+- name: set hostname
+  command: hostnamectl set-hostname {{hostname_value}}
+  become: true
+
+- name: set hostname --transient
+  command: hostnamectl set-hostname --transient {{hostname_value}}
+  become: true
+

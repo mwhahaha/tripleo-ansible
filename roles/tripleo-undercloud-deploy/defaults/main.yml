@@ -1,0 +1,3 @@
+---
+# defaults file for undercloud-deploy
+undercloud_deploy_opts: --use-heat

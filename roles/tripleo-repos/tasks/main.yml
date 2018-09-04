@@ -1,0 +1,38 @@
+---
+# FIXME: this doesn't actualy work, wtf ansible.
+- name: check if tripleo-repos is installed
+  yum:
+    list: "python2-tripleo-repos"
+  register: pkg
+
+- debug:
+    var: pkg
+    verbosity: 4
+
+- block:
+    - name: get current-tripleo repo
+      get_url:
+        url: https://trunk.rdoproject.org/centos7-master/current-tripleo/delorean.repo
+        dest: /etc/yum.repos.d/delorean.repo
+      tags:
+        - setup
+
+    - name: install tripleo-repos
+      package: name=python2-tripleo-repos state=latest
+
+    - name: remove current-tripleo-repo
+      file:
+        path: /etc/yum.repos.d/delorean.repo
+        state: absent
+  become: true
+#when: not pkg or pkg.results|selectattr("yumstate", "match", "installed")|list|length != 0
+
+- name: run tripleo-repos
+  shell: tripleo-repos -b {{ branch_version|default('master') }} {{ version }} ceph
+  become: true
+
+- name: cleanup metadata
+  command: yum clean metadata
+  warn: False
+  become: true
+

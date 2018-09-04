@@ -1,0 +1,24 @@
+---
+- hosts: standalone
+  gather_facts: true
+  vars_prompt:
+    - name: "branch_version"
+      prompt: "Branch to use (master|queens|pike...)"
+      default: "master"
+    - name: "version"
+      prompt: "Version to deploy (current-tripleo-dev|current)"
+      default: "current-tripleo-dev"
+    - name: "hostname_value"
+      prompt: "Hostname for the host"
+      default: "undercloud.localdomain"
+  tasks:
+    - include_vars: "{{ item }}"
+      with_first_found:
+        - "vars/{{ ansible_distribution }}.yml"
+        - "vars/default.yml"
+    - include_role:
+        name: tripleo-repos
+    - include_role:
+        name: hostname
+    - include_role:
+        name: tripleo-client

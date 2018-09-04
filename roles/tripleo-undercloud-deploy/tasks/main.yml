@@ -1,0 +1,5 @@
+---
+# tasks file for undercloud-deploy
+- name: undercloud deployment
+  shell: >
+      openstack undercloud install {{undercloud_deploy_opts}}  &>> ~/install.log

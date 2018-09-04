@@ -1,0 +1,4 @@
+---
+branch_version: master
+version: current-tripleo-dev
+hostname_value: undercloud.localdomain
